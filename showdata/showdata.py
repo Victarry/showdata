@@ -1,6 +1,7 @@
 import time
 import os
 from tqdm import tqdm
+from pathlib import Path
 
 
 def time_it(func):
@@ -37,6 +38,16 @@ def load_dir(input_path, level):
                 content_table.append(content)
                 idx += 1
 
+    return content_table
+
+
+def load_dirs(input_paths):
+    content_table = []
+    paths = [Path(p) for p in input_paths if Path(p).is_dir()]
+    for idx, child_path in enumerate(paths[0].iterdir()):
+        img_name = child_path.name
+        content = {'idx': idx+1, 'img_name': img_name+' ', **{str(p): str(p/img_name) for p in paths}}
+        content_table.append(content) 
     return content_table
 
 
